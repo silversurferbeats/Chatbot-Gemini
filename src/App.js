@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Style components using Tailwind CSS
@@ -10,6 +10,7 @@ const App = () => {
   const [userInput, setUserInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const inputRef = useRef(null);
 
   // inislize your Gemeni Api
   const apiKey = process.env.REACT_APP_APIKEYGEMINI;
@@ -56,6 +57,12 @@ const App = () => {
     setChatHistory([]);
   };
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-center items-center mb-8">
@@ -71,6 +78,7 @@ const App = () => {
 
       <div className="flex mt-4 gap-1" onKeyDown={handleKeyPress}>
         <input
+          ref={inputRef}
           type="text"
           className="flex-grow px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Escribe tu mensaje..."
